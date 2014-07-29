@@ -30,7 +30,8 @@ typedef void(^CSVoidBlock)();
 + (void)showInViewController:(UIViewController*)viewController
                        style:(CSNotificationViewStyle)style
                      message:(NSString*)message
-                    duration:(NSTimeInterval)duration;
+                    duration:(NSTimeInterval)duration
+                   tapHidden:(BOOL)tapHidden;
 
 + (void)showInViewController:(UIViewController*)viewController
                    tintColor:(UIColor*)tintColor
@@ -51,6 +52,10 @@ typedef void(^CSVoidBlock)();
 + (CSNotificationView*)notificationViewWithParentViewController:(UIViewController*)viewController
                                                       tintColor:(UIColor*)tintColor
                                                           image:(UIImage*)image
+                                                        message:(NSString*)message;
+
++ (CSNotificationView*)notificationViewWithParentViewController:(UIViewController*)viewController
+                                                          style:(CSNotificationViewStyle)style
                                                         message:(NSString*)message;
 
 #pragma mark - initialization

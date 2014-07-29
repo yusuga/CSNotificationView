@@ -40,11 +40,26 @@ static NSString * kCSNavigationBarBoundsKeyPath = @"bounds";
 
 #pragma mark + quick presentation
 
++ (void)showInViewController:(UIViewController *)viewController
+                   tintColor:(UIColor*)tintColor
+                       image:(UIImage*)image
+                     message:(NSString *)message
+                    duration:(NSTimeInterval)duration
+{
+    [self showInViewController:viewController
+                     tintColor:tintColor
+                         image:image
+                       message:message
+                      duration:duration
+                     tapHidden:NO];
+}
+
 + (void)showInViewController:(UIViewController*)viewController
-         tintColor:(UIColor*)tintColor
-             image:(UIImage*)image
-           message:(NSString*)message
-          duration:(NSTimeInterval)duration
+                   tintColor:(UIColor*)tintColor
+                       image:(UIImage*)image
+                     message:(NSString*)message
+                    duration:(NSTimeInterval)duration
+                   tapHidden:(BOOL)tapHidden
 {
     NSAssert(message, @"'message' must not be nil.");
     
@@ -54,6 +69,13 @@ static NSString * kCSNavigationBarBoundsKeyPath = @"bounds";
     note.textLabel.text = message;
     
     void (^completion)() = ^{[note setVisible:NO animated:YES completion:nil];};
+    
+    if (tapHidden) {
+        note.tapHandler = ^{
+            completion();
+        };
+    }
+    
     [note setVisible:YES animated:YES completion:^{
         double delayInSeconds = duration;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -99,19 +121,22 @@ static NSString * kCSNavigationBarBoundsKeyPath = @"bounds";
     [self showInViewController:viewController
                          style:style
                        message:message
-                      duration:kCSNotificationViewDefaultShowDuration];
+                      duration:kCSNotificationViewDefaultShowDuration
+                     tapHidden:NO];
 }
 
 + (void)showInViewController:(UIViewController *)viewController
                        style:(CSNotificationViewStyle)style
                      message:(NSString *)message
                     duration:(NSTimeInterval)duration
+                   tapHidden:(BOOL)tapHidden
 {
     [CSNotificationView showInViewController:viewController
                                    tintColor:[CSNotificationView blurTintColorForStyle:style]
                                        image:[CSNotificationView imageForStyle:style]
                                      message:message
-                                    duration:duration];
+                                    duration:duration
+                                   tapHidden:tapHidden];
 }
 
 #pragma mark + creators
@@ -126,6 +151,20 @@ static NSString * kCSNavigationBarBoundsKeyPath = @"bounds";
     CSNotificationView* note = [[CSNotificationView alloc] initWithParentViewController:viewController];
     note.tintColor = tintColor;
     note.image = image;
+    note.textLabel.text = message;
+    
+    return note;
+}
+
++ (CSNotificationView*)notificationViewWithParentViewController:(UIViewController*)viewController
+                                                          style:(CSNotificationViewStyle)style
+                                                        message:(NSString*)message
+{
+    NSParameterAssert(viewController);
+    
+    CSNotificationView* note = [[CSNotificationView alloc] initWithParentViewController:viewController];
+    note.tintColor = [CSNotificationView blurTintColorForStyle:style];
+    note.image = [CSNotificationView imageForStyle:style];
     note.textLabel.text = message;
     
     return note;
