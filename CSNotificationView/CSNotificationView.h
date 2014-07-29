@@ -24,14 +24,19 @@ typedef void(^CSVoidBlock)();
 #pragma mark + quick presentation
 
 + (void)showInViewController:(UIViewController*)viewController
-             style:(CSNotificationViewStyle)style
-           message:(NSString*)message;
+                       style:(CSNotificationViewStyle)style
+                     message:(NSString*)message;
 
 + (void)showInViewController:(UIViewController*)viewController
-         tintColor:(UIColor*)tintColor
-             image:(UIImage*)image
-           message:(NSString*)message
-          duration:(NSTimeInterval)duration;
+                       style:(CSNotificationViewStyle)style
+                     message:(NSString*)message
+                    duration:(NSTimeInterval)duration;
+
++ (void)showInViewController:(UIViewController*)viewController
+                   tintColor:(UIColor*)tintColor
+                       image:(UIImage*)image
+                     message:(NSString*)message
+                    duration:(NSTimeInterval)duration;
 
 + (void)showInViewController:(UIViewController*)viewController
                    tintColor:(UIColor*)tintColor

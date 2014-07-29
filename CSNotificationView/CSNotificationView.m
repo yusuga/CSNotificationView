@@ -96,13 +96,22 @@ static NSString * kCSNavigationBarBoundsKeyPath = @"bounds";
              style:(CSNotificationViewStyle)style
            message:(NSString *)message
 {
-    
-    
+    [self showInViewController:viewController
+                         style:style
+                       message:message
+                      duration:kCSNotificationViewDefaultShowDuration];
+}
+
++ (void)showInViewController:(UIViewController *)viewController
+                       style:(CSNotificationViewStyle)style
+                     message:(NSString *)message
+                    duration:(NSTimeInterval)duration
+{
     [CSNotificationView showInViewController:viewController
-                         tintColor:[CSNotificationView blurTintColorForStyle:style]
-                             image:[CSNotificationView imageForStyle:style]
-                           message:message
-                          duration:kCSNotificationViewDefaultShowDuration];
+                                   tintColor:[CSNotificationView blurTintColorForStyle:style]
+                                       image:[CSNotificationView imageForStyle:style]
+                                     message:message
+                                    duration:duration];
 }
 
 #pragma mark + creators
